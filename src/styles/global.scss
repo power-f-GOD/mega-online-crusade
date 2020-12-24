@@ -8,40 +8,36 @@ body,
   height: 100%;
   width: 100%;
   margin: 0;
-  overflow: hidden;
+  // overflow: hidden;
   font-size: 1rem;
-  background-color: $theme-primary-v1;
+  background: $theme-primary;
   color: #111;
-  font-family: 'Montserrat', 'Trebuchet MS', sans-serif;
   line-height: 1.8rem;
 }
 
 * {
   box-sizing: border-box;
   outline: none !important;
+  font-family: 'Montserrat', 'Trebuchet MS', sans-serif !important;
 }
 
 body {
   padding: 0 !important;
 
-  &.desktop {
-    [class*='PrivateSwipeArea'] {
-      display: none;
-    }
-
+  &.desktop.is-pc {
     &.custom-scroll-bar,
     .custom-scroll-bar,
     .MuiDrawer-paper {
       &::-webkit-scrollbar {
-        width: 0.75em;
+        width: 0.5em;
       }
 
       &::-webkit-scrollbar-track {
-        background: $theme-primary-v6;
+        background: $theme-secondary-v6;
       }
 
       &::-webkit-scrollbar-thumb {
-        background: $theme-primary-v3 !important;
+        background: $theme-secondary-v3 !important;
       }
     }
   }
@@ -49,6 +45,7 @@ body {
 
 #root {
   display: flex;
+  // background-size: contain;
 
   > div {
     width: 100%;
@@ -102,12 +99,12 @@ h4,
 h5,
 h6 {
   margin: 0;
-  font-family: 'Google Sans', 'Trebuchet MS', sans-serif !important;
+  // font-family: 'Google Sans', 'Trebuchet MS', sans-serif !important;
   line-height: 150%;
 
   * {
     font-size: inherit;
-    font-family: 'Google Sans', 'Trebuchet MS', sans-serif !important;
+    // font-family: 'Google Sans', 'Trebuchet MS', sans-serif !important;
   }
 }
 
@@ -169,9 +166,10 @@ h6 {
 
 .container,
 .row,
+[class*='col-'],
 .col {
   margin: unset;
-  padding: 0;
+  // padding: 0;
   padding-right: 0;
   padding-left: 0;
   max-width: unset;
@@ -214,39 +212,13 @@ h6 {
 
 [class^='MuiFormControl'],
 div {
-  fieldset {
-    transition: 0.35s, border-width 0s;
-  }
-}
-
-.MuiOutlinedInput-root {
-  border-radius: 0.35rem;
-  background: #f8f8f8;
+  // fieldset {
+  //   transition: 0.35s, border-width 0s;
+  // }
 }
 
 [class^='MuiFormControl'],
 div {
-  .MuiInputBase-root {
-    &::before,
-    &::after {
-      transition: 0.3s;
-    }
-
-    &::after {
-      border-color: $theme-primary;
-    }
-
-    &:hover {
-      &::before {
-        border-color: grey;
-      }
-    }
-  }
-
-  .Mui-focused {
-    color: $theme-primary !important;
-  }
-
   .Mui-disabled {
     fieldset {
       background: #ddd;

@@ -12,10 +12,13 @@ export const userDeviceIsMobile = /(Android|webOS|iPhone|iPad|iPod|BlackBerry|Wi
   window.navigator.userAgent
 );
 
+export const isMac = /Mac(\s?OS)?/i.test(window.navigator.userAgent);
+
 if (userDeviceIsMobile) {
   document.body.classList.add('mobile');
 } else {
   document.body.classList.add('desktop');
+  document.body.classList.add(isMac ? 'is-mac' : 'is-pc');
 }
 
 ReactDOM.render(
