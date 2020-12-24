@@ -145,7 +145,12 @@ const App = () => {
 
     //send data/request to server here
     alert('Registered!');
-  }, []);
+    axios({});
+  }, [validation]);
+
+  const handleRegistrationRequest = useCallback(() => {
+    sendData();
+  }, [sendData]);
 
   return (
     <Box className='App fade-in' position='relative'>
@@ -236,8 +241,7 @@ const App = () => {
                 type='submit'
                 color='primary'
                 fullWidth
-                // onClick={handleRegistrationRequest}
-              >
+                onClick={handleRegistrationRequest}>
                 {/* {signup.status === 'pending' ? (
                   <CircularProgress color='inherit' size={28} />
                 ) : (
