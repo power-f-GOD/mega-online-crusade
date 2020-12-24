@@ -1,6 +1,8 @@
 import React, { createRef, useCallback, useMemo, useState } from 'react';
 import {} from 'react-router-dom';
 
+import axios from 'axios';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -23,10 +25,10 @@ export const refs = {
 
 const App = () => {
   const [validation, setValidation] = useState({
-    full_name: { helperText: '', err: false },
-    nickname: { helperText: '', err: false },
-    email: { helperText: '', err: false },
-    phone: { helperText: '', err: false }
+    full_name: { helperText: '', err: false, value: '' },
+    nickname: { helperText: '', err: false, value: '' },
+    email: { helperText: '', err: false, value: '' },
+    phone: { helperText: '', err: false, value: '' }
   });
 
   const handleInputChange = useCallback(
@@ -47,7 +49,8 @@ const App = () => {
                   ? 'Full name required'
                   : isInvalid
                   ? 'Kindly enter your full name'
-                  : ''
+                  : '',
+                value
               }
             }));
           }
@@ -68,7 +71,8 @@ const App = () => {
                   ? 'Email required'
                   : isInvalid
                   ? 'Email invalid'
-                  : ''
+                  : '',
+                value
               }
             }));
           }
@@ -84,7 +88,8 @@ const App = () => {
                 ? 'Phone required'
                 : isInvalid
                 ? 'Invalid phone number'
-                : ''
+                : '',
+              value
             }
           }));
           break;
@@ -126,6 +131,21 @@ const App = () => {
       onBlur: capitalizeInput
     };
   }, [capitalizeInput]);
+
+  const sendData = useCallback(() => {
+    const data = {} as any;
+
+    for (const [key, value] of Object.entries(validation)) {
+      if (value.err) {
+        return;
+      }
+
+      data[key] = value.value;
+    }
+
+    //send data/request to server here
+    alert('Registered!');
+  }, []);
 
   return (
     <Box className='App fade-in' position='relative'>
