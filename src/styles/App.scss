@@ -32,7 +32,8 @@ body.no-webp {
 .top-banner {
   height: 20rem;
   max-height: 50vh;
-  width: $app-width;
+  // width: $app-width;
+  width: 100%;
   max-width: 100%;
   background: {
     position: center;

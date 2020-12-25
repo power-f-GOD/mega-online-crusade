@@ -13,8 +13,13 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
+import MailIcon from '@material-ui/icons/MailOutlined';
+import PhoneAndroidRoundedIcon from '@material-ui/icons/PhoneAndroidOutlined';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 
-export const refs = {
+const refs = {
   full_name: createRef<HTMLInputElement>(),
   nickname: createRef<HTMLInputElement>(),
   phone: createRef<HTMLInputElement>(),
@@ -24,6 +29,7 @@ export const refs = {
   // departmentInput: createRef<HTMLInputElement>(),
   // levelInput: createRef<HTMLInputElement>()
 };
+const formRef = createRef<HTMLFormElement>();
 
 const App = () => {
   const [validation, setValidation] = useState({
@@ -201,9 +207,7 @@ const App = () => {
 
           //reset form
           if (!error) {
-            for (const ref in refs) {
-              (refs as any)[ref].current.value = '';
-            }
+            ((formRef.current as HTMLFormElement) ?? {}).reset();
           }
         }
       )
@@ -236,7 +240,8 @@ const App = () => {
           className='d-flex justify-content-center  flex-column slide-in-bottom'
           noValidate
           autoComplete='on'
-          onSubmit={(e: any) => e.preventDefault()}>
+          onSubmit={(e: any) => e.preventDefault()}
+          ref={formRef}>
           <h1 className='text-center mb-4 mt-4 px-2'>
             MOC - Attendee Registration Form
           </h1>
@@ -255,6 +260,13 @@ const App = () => {
                 fullWidth
                 onChange={handleInputChange}
                 inputProps={inputProps}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <PersonIcon />
+                    </InputAdornment>
+                  )
+                }}
               />
             </Col>
             <Col xs={12} className='text-field-container'>
@@ -270,6 +282,13 @@ const App = () => {
                 fullWidth
                 onChange={handleInputChange}
                 inputProps={inputProps}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <PersonIcon />
+                    </InputAdornment>
+                  )
+                }}
               />
             </Col>
             <Col xs={12} className='text-field-container'>
@@ -287,6 +306,13 @@ const App = () => {
                 type='email'
                 onChange={handleInputChange}
                 inputProps={inputProps}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <MailIcon />
+                    </InputAdornment>
+                  )
+                }}
               />
             </Col>
             <Col xs={12} className='text-field-container'>
@@ -304,6 +330,13 @@ const App = () => {
                 fullWidth
                 onChange={handleInputChange}
                 inputProps={inputProps}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <PhoneAndroidRoundedIcon />
+                    </InputAdornment>
+                  )
+                }}
               />
             </Col>
             <Col xs={12} className='text-field-container button-wrapper'>
@@ -328,7 +361,9 @@ const App = () => {
                     />
                   </>
                 ) : (
-                  'Register'
+                  <>
+                    <PersonAddOutlinedIcon className='mr-2' /> Register
+                  </>
                 )}
               </Button>
             </Col>
@@ -339,7 +374,7 @@ const App = () => {
       <Snackbar
         open={snackbarState.open}
         autoHideDuration={6000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         onClose={handleCloseSnackbar}>
         <MuiAlert
           elevation={6}
