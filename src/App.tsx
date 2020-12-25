@@ -231,7 +231,7 @@ const App = () => {
           noValidate
           autoComplete='on'
           onSubmit={(e: any) => e.preventDefault()}>
-          <h1 className='text-center mb-5 mt-4'>
+          <h1 className='text-center mb-4 mt-4'>
             MOC - Attendee Registration Form
           </h1>
           <Row className='align-self-center'>
