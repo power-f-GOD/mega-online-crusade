@@ -351,7 +351,7 @@ const App = () => {
         </MuiAlert>
       </Snackbar>
 
-      <Container as='footer' className='slide-in'>
+      <Container as='footer' className='slide-in-bottom'>
         Made with love
         <span role='img' aria-label='love emoji'>
           ❤️
