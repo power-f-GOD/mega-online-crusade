@@ -79,7 +79,7 @@ const App = () => {
         helperText = isEmpty
           ? 'Email required'
           : isInvalid
-          ? 'Email invalid'
+          ? 'Input not a valid email'
           : '';
         break;
       }
@@ -333,7 +333,7 @@ const App = () => {
       <Snackbar
         open={snackbarState.open}
         autoHideDuration={6000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={handleCloseSnackbar}>
         <MuiAlert
           elevation={6}
