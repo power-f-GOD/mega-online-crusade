@@ -1,4 +1,25 @@
-export const transform = (el: any, val: string) => {
+const createObserver = (
+  root: HTMLElement | null,
+  callback: IntersectionObserverCallback,
+  options?: IntersectionObserverInit
+) => {
+  const { rootMargin, threshold } = options || {};
+
+  return new IntersectionObserver(
+    callback,
+    options
+      ? { rootMargin: rootMargin ?? '0px', threshold: threshold ?? 1.0, root }
+      : {
+          root,
+          rootMargin: '0px',
+          threshold: Array(101)
+            .fill(0)
+            .map((_, i) => Number((i / 100).toFixed(1)))
+        }
+  );
+};
+
+const transform = (el: any, val: string) => {
   el.style.WebkitTransform = val;
   el.style.MozTransform = val;
   el.style.OTransform = val;
@@ -87,4 +108,4 @@ function _requestAnimationFrameWrapper() {
 //   };
 // }
 
-export { delay, interval };
+export { delay, interval, createObserver, transform };

@@ -11,6 +11,7 @@ $br: 0.625rem;
 .top-banner-container {
   position: sticky;
   top: 0;
+  height: 20rem;
 }
 
 body.webp {
@@ -30,9 +31,8 @@ body.no-webp {
 }
 
 .top-banner {
-  height: 20rem;
-  max-height: 50vh;
-  // width: $app-width;
+  height: 100%;
+  // max-height: 50vh;
   width: 100%;
   max-width: 100%;
   background: {
@@ -45,8 +45,7 @@ form {
   background: $theme-primary;
   padding: 1rem 0;
   position: relative;
-  box-shadow: -0.5rem -1.25rem 2.5rem rgba($prim-r, $prim-g, $prim-b, 1);
-  // z-index: 1;
+  // box-shadow: -0.5rem -1.25rem 1.25rem rgba($prim-r, $prim-g, $prim-b, 1);
 
   & > .row {
     width: $app-width;

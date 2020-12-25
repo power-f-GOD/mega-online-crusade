@@ -1,5 +1,4 @@
 import React, { createRef, useCallback, useMemo, useState } from 'react';
-import {} from 'react-router-dom';
 
 import axios, { AxiosResponse } from 'axios';
 
@@ -24,10 +23,6 @@ const refs = {
   nickname: createRef<HTMLInputElement>(),
   phone: createRef<HTMLInputElement>(),
   email: createRef<HTMLInputElement>()
-  // passwordInput: createRef<HTMLInputElement>(),
-  // institutionInput: createRef<HTMLInputElement>(),
-  // departmentInput: createRef<HTMLInputElement>(),
-  // levelInput: createRef<HTMLInputElement>()
 };
 const formRef = createRef<HTMLFormElement>();
 
@@ -202,7 +197,7 @@ const App = () => {
                   validation.full_name.value.split(' ')[0]
                 }. You've been successfully registered.`
               : /already.*registered/.test(message)
-              ? "You've already been registered for the crusade. See you there. 🙂"
+              ? "You've already been registered for the crusade. See you on Sunday. 🙂"
               : message + '.'
           });
           setAppState({ isLoading: false, erred: error });
@@ -234,7 +229,7 @@ const App = () => {
   return (
     <Box className='App fade-in' position='relative'>
       <Container className='top-banner-container d-flex justify-content-center'>
-        <Box className='top-banner slide-in-top'></Box>
+        <Col className='top-banner slide-in-top'></Col>
       </Container>
 
       <Container>
@@ -259,6 +254,7 @@ const App = () => {
                 autoComplete='name'
                 inputRef={refs.full_name}
                 helperText={validation.full_name.helperText}
+                aria-label='full name'
                 fullWidth
                 onChange={handleInputChange}
                 inputProps={inputProps}
@@ -281,6 +277,7 @@ const App = () => {
                 autoComplete='nickname'
                 inputRef={refs.nickname}
                 helperText={''}
+                aria-label='nickname'
                 fullWidth
                 onChange={handleInputChange}
                 inputProps={inputProps}
@@ -304,6 +301,7 @@ const App = () => {
                 autoComplete='email'
                 inputRef={refs.email}
                 helperText={validation.email.helperText}
+                aria-label='email'
                 fullWidth
                 type='email'
                 onChange={handleInputChange}
@@ -329,6 +327,7 @@ const App = () => {
                 inputRef={refs.phone}
                 helperText={validation.phone.helperText}
                 type='tel'
+                aria-label='phone number'
                 fullWidth
                 onChange={handleInputChange}
                 inputProps={inputProps}
@@ -351,7 +350,8 @@ const App = () => {
                 type='submit'
                 color='primary'
                 fullWidth
-                onClick={handleRegistrationRequest}>
+                onClick={handleRegistrationRequest}
+                aria-label='submit'>
                 {appState.isLoading ? (
                   <>
                     Registering you...{' '}
@@ -388,7 +388,7 @@ const App = () => {
             <>
               <br />
               See you at the crusade!{' '}
-              <span role='img' aria-label='love emoji'>
+              <span role='img' aria-label='smile emoji'>
                 🙂
               </span>
             </>
