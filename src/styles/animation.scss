@@ -95,7 +95,7 @@
 
 @keyframes slideInTop {
   from {
-    transform: translateY(-70%);
+    transform: translateY(-20rem);
     opacity: 0;
   }
   to {
@@ -110,7 +110,7 @@
 
 @keyframes slideInBottom {
   from {
-    transform: translateY(70%);
+    transform: translateY(20rem);
     opacity: 0;
   }
   to {
