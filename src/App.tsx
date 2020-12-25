@@ -63,7 +63,9 @@ const App = () => {
 
     switch (id) {
       case 'full_name': {
-        const isInvalid = !/^\w{2,}\s+\w{2,}/.test(value.trim());
+        const isInvalid = !/^[a-z]{2,}\s+[a-z]{2,}(\s+[a-z]{2,})?$/i.test(
+          value.trim()
+        );
 
         err = isEmpty || isInvalid;
         helperText = isEmpty
@@ -89,7 +91,7 @@ const App = () => {
         break;
       }
       case 'phone': {
-        const isInvalid = !/^\+?\d{7,15}$/.test(value.trim());
+        const isInvalid = !/^\+?\d{8,15}$/.test(value.trim());
 
         err = isEmpty || isInvalid;
         helperText = isEmpty
