@@ -13,13 +13,28 @@ $br: 0.625rem;
   top: 0;
 }
 
+body.webp {
+  .top-banner {
+    background: {
+      image: url('/images/banner.webp');
+    }
+  }
+}
+
+body.no-webp {
+  .top-banner {
+    background: {
+      image: url('/images/banner.jpg');
+    }
+  }
+}
+
 .top-banner {
   height: 20rem;
   max-height: 50vh;
   width: $app-width;
   max-width: 100%;
   background: {
-    image: url('../images/banner.jpg');
     position: center;
     size: $app-width;
   }

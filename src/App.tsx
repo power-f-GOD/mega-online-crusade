@@ -18,8 +18,7 @@ export const refs = {
   full_name: createRef<HTMLInputElement>(),
   nickname: createRef<HTMLInputElement>(),
   phone: createRef<HTMLInputElement>(),
-  email: createRef<HTMLInputElement>(),
-  school: createRef<HTMLInputElement>()
+  email: createRef<HTMLInputElement>()
   // passwordInput: createRef<HTMLInputElement>(),
   // institutionInput: createRef<HTMLInputElement>(),
   // departmentInput: createRef<HTMLInputElement>(),
@@ -199,6 +198,13 @@ const App = () => {
               : message + '.'
           });
           setAppState({ isLoading: false, erred: error });
+
+          //reset form
+          if (!error) {
+            for (const ref in refs) {
+              (refs as any)[ref].current.value = '';
+            }
+          }
         }
       )
       .catch((e) => {
@@ -231,7 +237,7 @@ const App = () => {
           noValidate
           autoComplete='on'
           onSubmit={(e: any) => e.preventDefault()}>
-          <h1 className='text-center mb-4 mt-4'>
+          <h1 className='text-center mb-4 mt-4 px-2'>
             MOC - Attendee Registration Form
           </h1>
           <Row className='align-self-center'>
@@ -344,8 +350,10 @@ const App = () => {
           {!appState.erred && (
             <>
               <br />
-              <br />
-              See you at the crusade!
+              See you at the crusade!{' '}
+              <span role='img' aria-label='love emoji'>
+                🙂
+              </span>
             </>
           )}
         </MuiAlert>

@@ -38,7 +38,7 @@
     "sass": "node-sass -w --output-style=compressed src/styles/index.scss src/styles/index.min.css",
     "add": "git stash && git checkout dev && git stash apply && git add .",
     "merge": "git stash && git checkout master && git pull origin master && git checkout dev && git merge master",
-    "push": "npm run rebase:dev && git pull && git push",
+    "push": "npm run merge && git checkout dev && git pull && git push",
     "deploy": "git checkout master && git pull origin master && git merge dev && git push origin master"
   },
   "eslintConfig": {

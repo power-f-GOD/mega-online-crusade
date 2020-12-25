@@ -22,6 +22,12 @@
   </head>
 
   <body class="custom-scroll-bar">
+    <img
+      style="display: none"
+      src="/images/banner.webp"
+      onload="this.parentNode.classList.add('webp');"
+      onerror="this.parentNode.classList.add('no-webp');"
+    />
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="custom-scroll-bar"></div>
   </body>
