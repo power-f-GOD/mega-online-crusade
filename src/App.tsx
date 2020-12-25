@@ -362,7 +362,7 @@ const App = () => {
                   </>
                 ) : (
                   <>
-                    <PersonAddOutlinedIcon className='mr-2' /> Register
+                    Register <PersonAddOutlinedIcon className='ml-2' />
                   </>
                 )}
               </Button>
