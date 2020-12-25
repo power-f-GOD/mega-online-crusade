@@ -25,7 +25,7 @@
 }
 
 .slide-in {
-  animation: slideIn 0.75s forwards ease;
+  animation: slideIn 0.85s forwards ease;
 }
 
 @keyframes slideIn {
@@ -34,21 +34,6 @@
   }
   to {
     transform: translateX(0);
-  }
-}
-
-.slide-in-bottom {
-  animation: slideInBottom 0.5s;
-}
-
-@keyframes slideInBottom {
-  from {
-    transform: translateY(1rem);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
   }
 }
 
@@ -90,7 +75,7 @@
 }
 
 .scale-in {
-  animation: scaleIn 0.75s cubic-bezier(0.645, 0.045, 0.355, 1);
+  animation: scaleIn 0.85s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 @keyframes scaleIn {
@@ -105,12 +90,27 @@
 // home page animations
 
 .slide-in-top {
-  animation: slideInTop 0.75s ease;
+  animation: slideInTop 0.85s;
 }
 
 @keyframes slideInTop {
   from {
-    transform: translateY(-100%);
+    transform: translateY(-70%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-bottom {
+  animation: slideInBottom 0.85s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(70%);
     opacity: 0;
   }
   to {

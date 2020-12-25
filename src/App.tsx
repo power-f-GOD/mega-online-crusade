@@ -1,7 +1,7 @@
 import React, { createRef, useCallback, useMemo, useState } from 'react';
 import {} from 'react-router-dom';
 
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -10,13 +10,16 @@ import Col from 'react-bootstrap/Col';
 import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const refs = {
-  full_nameInput: createRef<HTMLInputElement>(),
-  nicknameInput: createRef<HTMLInputElement>(),
-  phoneInput: createRef<HTMLInputElement>(),
-  emailInput: createRef<HTMLInputElement>(),
-  schoolInput: createRef<HTMLInputElement>()
+  full_name: createRef<HTMLInputElement>(),
+  nickname: createRef<HTMLInputElement>(),
+  phone: createRef<HTMLInputElement>(),
+  email: createRef<HTMLInputElement>(),
+  school: createRef<HTMLInputElement>()
   // passwordInput: createRef<HTMLInputElement>(),
   // institutionInput: createRef<HTMLInputElement>(),
   // departmentInput: createRef<HTMLInputElement>(),
@@ -30,73 +33,84 @@ const App = () => {
     email: { helperText: '', err: false, value: '' },
     phone: { helperText: '', err: false, value: '' }
   });
+  const [snackbarState, setSnackbarState] = useState<{
+    open: boolean;
+    severity: 'success' | 'error' | 'info';
+    message: string;
+  }>({ open: false, severity: 'success', message: '' });
+  const [appState, setAppState] = useState({ isLoading: false, erred: false });
+
+  const handleCloseSnackbar = (
+    _event?: React.SyntheticEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarState((prev) => ({ ...prev, open: false }));
+  };
+
+  const validate = useCallback((id: string, value: string) => {
+    const isEmpty = !value.trim();
+    let helperText = {};
+    let err = false;
+
+    switch (id) {
+      case 'full_name': {
+        const isInvalid = !/^\w{2,}\s+\w{2,}/.test(value.trim());
+
+        err = isEmpty || isInvalid;
+        helperText = isEmpty
+          ? 'Full name required'
+          : isInvalid
+          ? 'Kindly enter your full name'
+          : '';
+        break;
+      }
+      case 'nickname':
+        break;
+      case 'email': {
+        const isInvalid = !/^[^.].*[^.\W]+@[^.\W]+\..*[^.]+$/.test(
+          value.trim()
+        );
+
+        err = isEmpty || isInvalid;
+        helperText = isEmpty
+          ? 'Email required'
+          : isInvalid
+          ? 'Email invalid'
+          : '';
+        break;
+      }
+      case 'phone': {
+        const isInvalid = !/^\+?\d{7,15}$/.test(value.trim());
+
+        err = isEmpty || isInvalid;
+        helperText = isEmpty
+          ? 'Phone required'
+          : isInvalid
+          ? 'Input not a valid phone number'
+          : '';
+        break;
+      }
+    }
+
+    setValidation((prev) => ({
+      ...prev,
+      [id]: {
+        err,
+        helperText,
+        value
+      }
+    }));
+  }, []);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { id, value } = e.target;
-      const isEmpty = !value.trim();
-
-      switch (id) {
-        case 'full_name':
-          {
-            const isInvalid = !/^\w{2,}\s+\w{2,}/.test(value.trim());
-
-            setValidation((prev) => ({
-              ...prev,
-              full_name: {
-                err: isEmpty || isInvalid,
-                helperText: isEmpty
-                  ? 'Full name required'
-                  : isInvalid
-                  ? 'Kindly enter your full name'
-                  : '',
-                value
-              }
-            }));
-          }
-          break;
-        case 'nickname':
-          break;
-        case 'email':
-          {
-            const isInvalid = !/^[^.].*[^.\W]+@[^.\W]+\..*[^.]+$/.test(
-              value.trim()
-            );
-
-            setValidation((prev) => ({
-              ...prev,
-              email: {
-                err: isEmpty || isInvalid,
-                helperText: isEmpty
-                  ? 'Email required'
-                  : isInvalid
-                  ? 'Email invalid'
-                  : '',
-                value
-              }
-            }));
-          }
-          break;
-        case 'phone': {
-          const isInvalid = !/^\+?\d{7,15}$/.test(value.trim());
-
-          setValidation((prev) => ({
-            ...prev,
-            phone: {
-              err: isEmpty || isInvalid,
-              helperText: isEmpty
-                ? 'Phone required'
-                : isInvalid
-                ? 'Invalid phone number'
-                : '',
-              value
-            }
-          }));
-          break;
-        }
-      }
+      validate(e.target.id, e.target.value);
     },
-    []
+    [validate]
   );
 
   const capitalizeInput = useCallback(
@@ -134,19 +148,72 @@ const App = () => {
 
   const sendData = useCallback(() => {
     const data = {} as any;
+    let doesErr = false;
 
     for (const [key, value] of Object.entries(validation)) {
-      if (value.err) {
-        return;
+      if (
+        value.err ||
+        (!(refs as any)[key].current?.value.trim() && key !== 'nickname')
+      ) {
+        validate(key, value.value);
+        doesErr = true;
       }
 
       data[key] = value.value;
     }
 
-    //send data/request to server here
-    alert('Registered!');
-    axios({});
-  }, [validation]);
+    setAppState({ isLoading: false, erred: doesErr });
+
+    if (doesErr) return;
+
+    data.school = window.location.pathname
+      .split('/')
+      .slice(-1)[0]
+      .split('')
+      .map((char) => char.toUpperCase())
+      .join('');
+
+    setAppState({ isLoading: true, erred: false });
+    axios({
+      url: 'https://moc-backend.herokuapp.com/api/v1/attendee/save',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data,
+      validateStatus: (status) => (!/^(2|3|4)/.test(`${status}`) ? false : true)
+    })
+      .then(
+        ({
+          data: { error, message }
+        }: AxiosResponse<{ error: boolean; message: string }>) => {
+          setSnackbarState({
+            severity: error ? 'info' : 'success',
+            open: true,
+            message: !error
+              ? `Thank you, ${
+                  validation.full_name.value.split(' ')[0]
+                }. You've been successfully registered.`
+              : /already.*registered/.test(message)
+              ? "You've already been registered for the crusade. See you there. 🙂"
+              : message + '.'
+          });
+          setAppState({ isLoading: false, erred: error });
+        }
+      )
+      .catch((e) => {
+        setSnackbarState({
+          severity: 'error',
+          open: true,
+          message: !navigator.onLine
+            ? "You're offline."
+            : /fetch|network|connect/i.test(e.message)
+            ? 'A network error occurred. Please, check that you have an active internet connection.'
+            : e.message
+        });
+        setAppState({ isLoading: false, erred: true });
+      });
+  }, [validation, validate]);
 
   const handleRegistrationRequest = useCallback(() => {
     sendData();
@@ -154,17 +221,19 @@ const App = () => {
 
   return (
     <Box className='App fade-in' position='relative'>
-      <Container className='top-banner-container d-flex justify-content-center px-2'>
-        <Box className='top-banner'></Box>
+      <Container className='top-banner-container d-flex justify-content-center'>
+        <Box className='top-banner slide-in-top'></Box>
       </Container>
 
       <Container>
         <form
-          className='d-flex justify-content-center  flex-column'
+          className='d-flex justify-content-center  flex-column slide-in-bottom'
           noValidate
           autoComplete='on'
           onSubmit={(e: any) => e.preventDefault()}>
-          <h1 className='text-center my-4'>MOC - Registration Form</h1>
+          <h1 className='text-center mb-5 mt-4'>
+            MOC - Attendee Registration Form
+          </h1>
           <Row className='align-self-center'>
             <Col xs={12} className='text-field-container'>
               <TextField
@@ -175,7 +244,7 @@ const App = () => {
                 label='Full Name'
                 size='medium'
                 autoComplete='name'
-                inputRef={refs.full_nameInput}
+                inputRef={refs.full_name}
                 helperText={validation.full_name.helperText}
                 fullWidth
                 onChange={handleInputChange}
@@ -190,7 +259,7 @@ const App = () => {
                 label='Nickname'
                 size='medium'
                 autoComplete='nickname'
-                inputRef={refs.nicknameInput}
+                inputRef={refs.nickname}
                 helperText={''}
                 fullWidth
                 onChange={handleInputChange}
@@ -206,7 +275,7 @@ const App = () => {
                 label='Email'
                 size='medium'
                 autoComplete='email'
-                inputRef={refs.emailInput}
+                inputRef={refs.email}
                 helperText={validation.email.helperText}
                 fullWidth
                 type='email'
@@ -223,7 +292,7 @@ const App = () => {
                 label='Phone'
                 size='medium'
                 autoComplete='tel'
-                inputRef={refs.phoneInput}
+                inputRef={refs.phone}
                 helperText={validation.phone.helperText}
                 type='tel'
                 fullWidth
@@ -235,23 +304,82 @@ const App = () => {
               <Button
                 variant='contained'
                 size='large'
-                disabled={false}
+                disabled={appState.isLoading}
                 id='sign-up'
                 className='major-button'
                 type='submit'
                 color='primary'
                 fullWidth
                 onClick={handleRegistrationRequest}>
-                {/* {signup.status === 'pending' ? (
-                  <CircularProgress color='inherit' size={28} />
+                {appState.isLoading ? (
+                  <>
+                    Registering you...{' '}
+                    <CircularProgress
+                      color='inherit'
+                      size={16}
+                      className='ml-2'
+                      thickness={4}
+                    />
+                  </>
                 ) : (
-                  'SIGN UP'
-                )} */}
-                Register
+                  'Register'
+                )}
               </Button>
             </Col>
           </Row>
         </form>
+      </Container>
+
+      <Snackbar
+        open={snackbarState.open}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={handleCloseSnackbar}>
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          severity={snackbarState.severity}
+          onClose={handleCloseSnackbar}>
+          {snackbarState.message}
+          {!appState.erred && (
+            <>
+              <br />
+              <br />
+              See you at the crusade!
+            </>
+          )}
+        </MuiAlert>
+      </Snackbar>
+
+      <Container as='footer' className='slide-in'>
+        Made with love
+        <span role='img' aria-label='love emoji'>
+          ❤️
+        </span>{' '}
+        by the BLWUNN{' '}
+        <button className='revealer' onClick={(e) => e.preventDefault()}>
+          Dev Team
+        </button>
+        <br />
+        <div className='devs'>
+          ❯{' '}
+          <a
+            href='https://web.facebook.com/power.sunday3'
+            target='_blank'
+            rel='noopener noreferrer'>
+            @Power'f-GOD{' '}
+            <span role='img' aria-label='love emoji'>
+              ⚡️⚡️
+            </span>{' '}
+          </a>{' '}
+          et
+          <a
+            href='https://web.facebook.com/profile.php?id=100015216757988'
+            target='_blank'
+            rel='noopener noreferrer'>
+            @NuelSOFT
+          </a>
+        </div>
       </Container>
     </Box>
   );

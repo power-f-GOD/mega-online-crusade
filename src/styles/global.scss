@@ -10,7 +10,7 @@ body,
   margin: 0;
   // overflow: hidden;
   font-size: 1rem;
-  background: $theme-primary;
+  background: $theme-primary-v5;
   color: #111;
   line-height: 1.8rem;
 }
@@ -212,17 +212,14 @@ h6 {
 
 [class^='MuiFormControl'],
 div {
-  // fieldset {
-  //   transition: 0.35s, border-width 0s;
-  // }
-}
-
-[class^='MuiFormControl'],
-div {
   .Mui-disabled {
     fieldset {
       background: #ddd;
       border: none !important;
     }
   }
+}
+
+.MuiAlert-filledSuccess {
+  font-weight: normal;
 }

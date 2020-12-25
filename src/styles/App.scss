@@ -1,22 +1,24 @@
 @import './constants.scss';
 
-$app-width: 30rem;
+$app-width: 29rem;
 $br: 0.625rem;
 
 .App {
   // @include debugger($color: red);
+  background: $theme-primary-v5;
 }
 
 .top-banner-container {
   position: sticky;
-  top: 0;
+  top: 0.75rem;
+  padding: 0 0.75rem;
 }
 
 .top-banner {
-  height: 22rem;
+  height: 20rem;
   max-height: 50vh;
   width: $app-width;
-  // border-radius: 0 0 1rem 1rem;
+  border-radius: 1.25rem;
   max-width: 100%;
   background: {
     image: url('../images/banner.jpg');
@@ -25,15 +27,11 @@ $br: 0.625rem;
   }
 }
 
-h1 {
-  font-size: 2rem;
-  color: white;
-}
-
 form {
   background: $theme-primary;
   padding: 1rem 0;
   position: relative;
+  box-shadow: -0.5rem -1.25rem 2.5rem rgba($prim-r, $prim-g, $prim-b, 1);
   // z-index: 1;
 
   & > .row {
@@ -42,8 +40,13 @@ form {
   }
 }
 
+h1 {
+  font-size: 1.4rem;
+  color: white;
+}
+
 .text-field-container {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.15rem;
   padding: 0 0.75rem;
 }
 
@@ -55,7 +58,7 @@ form {
 
   &.Mui-focused,
   &.MuiFormLabel-filled {
-    transform: translate(13px, -0.85rem) scale(0.75);
+    transform: translate(0.8rem, -0.75rem) scale(0.75);
   }
 }
 
@@ -77,7 +80,7 @@ form {
 
 .MuiOutlinedInput-root {
   border-radius: $br;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.075);
   border: 0.0625rem solid rgba(255, 255, 255, 0.15);
   transition: 0.3s;
 
@@ -104,6 +107,14 @@ form {
   padding: 1rem;
 }
 
+.MuiFormHelperText-contained {
+  margin-left: 1rem;
+}
+
+.MuiAlert-filledInfo {
+  background-color: purple;
+}
+
 .button-wrapper {
   // position: sticky;
   bottom: 0;
@@ -120,6 +131,61 @@ form {
     &:hover,
     &:focus {
       background-color: #2484c8;
+    }
+
+    &:disabled {
+      background-color: grey;
+      color: #eee;
+      cursor: not-allowed;
+    }
+  }
+}
+
+footer {
+  color: white;
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 2rem;
+  padding: 2rem 1rem 0.75rem 1rem;
+  opacity: 0.1;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 0.25;
+  }
+
+  button {
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+    border: none;
+    color: inherit;
+    font-weight: bold;
+    font-size: inherit;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      ~ .devs {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  .devs {
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+
+    a {
+      color: inherit;
+      margin: 0 0.5rem;
+      font-weight: bold;
+      font-size: inherit;
     }
   }
 }
