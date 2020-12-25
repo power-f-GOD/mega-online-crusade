@@ -125,7 +125,7 @@ const App = () => {
               : word[0].toUpperCase() + word.slice(1).toLowerCase()
           )
           .join(' ');
-      } else {
+      } else if (!/nick/.test(id)) {
         e.target.value = value.toLowerCase();
       }
 
