@@ -16,22 +16,23 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import PersonIcon from '@material-ui/icons/PersonOutlined';
 import MailIcon from '@material-ui/icons/MailOutlined';
 import PhoneAndroidRoundedIcon from '@material-ui/icons/PhoneAndroidOutlined';
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import SendIcon from '@material-ui/icons/Send';
+import TouchAppIcon from '@material-ui/icons/TouchApp';
 
 const refs = {
-  full_name: createRef<HTMLInputElement>(),
   nickname: createRef<HTMLInputElement>(),
   phone: createRef<HTMLInputElement>(),
-  email: createRef<HTMLInputElement>()
+  email: createRef<HTMLInputElement>(),
+  prayer_request: createRef<HTMLInputElement>()
 };
 const formRef = createRef<HTMLFormElement>();
 
 const App = () => {
   const [validation, setValidation] = useState({
-    full_name: { helperText: '', err: false, value: '' },
     nickname: { helperText: '', err: false, value: '' },
     email: { helperText: '', err: false, value: '' },
-    phone: { helperText: '', err: false, value: '' }
+    phone: { helperText: '', err: false, value: '' },
+    prayer_request: { helperText: '', err: false, value: '' }
   });
   const [snackbarState, setSnackbarState] = useState<{
     open: boolean;
@@ -57,21 +58,24 @@ const App = () => {
     let err = false;
 
     switch (id) {
-      case 'full_name': {
-        const isInvalid = !/^[a-z]{2,}\s+[a-z]{2,}(\s+[a-z]{2,})?$/i.test(
-          value.trim()
-        );
+      // case 'full_name': {
+      //   const isInvalid = !/^[a-z]{2,}\s+[a-z]{2,}(\s+[a-z]{2,})?$/i.test(
+      //     value.trim()
+      //   );
 
-        err = isEmpty || isInvalid;
-        helperText = isEmpty
-          ? 'Full name required'
-          : isInvalid
-          ? 'Kindly enter your full name'
-          : '';
+      //   err = isEmpty || isInvalid;
+      //   helperText = isEmpty
+      //     ? 'Full name required'
+      //     : isInvalid
+      //     ? 'Kindly enter your full name'
+      //     : '';
+      //   break;
+      // }
+      case 'nickname': {
+        err = isEmpty;
+        helperText = isEmpty ? 'Kindly enter a/your nickname' : '';
         break;
       }
-      case 'nickname':
-        break;
       case 'email': {
         const isInvalid = !/^[^.].*[^.\W]+@[^.\W]+\..*[^.]+$/.test(
           value.trim()
@@ -86,7 +90,7 @@ const App = () => {
         break;
       }
       case 'phone': {
-        const isInvalid = !/^\+?\d{8,15}$/.test(value.trim());
+        const isInvalid = !/^(\+|0)\d{8,15}$/.test(value.trim());
 
         err = isEmpty || isInvalid;
         helperText = isEmpty
@@ -94,6 +98,11 @@ const App = () => {
           : isInvalid
           ? 'Input not a valid phone number'
           : '';
+        break;
+      }
+      case 'prayer_request': {
+        err = isEmpty;
+        helperText = isEmpty ? 'Kindly enter your prayer request' : '';
         break;
       }
     }
@@ -140,7 +149,7 @@ const App = () => {
   const inputProps = useMemo(() => {
     return {
       onKeyPress: (e: any) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
           e.target.blur();
         }
       },
@@ -153,10 +162,7 @@ const App = () => {
     let doesErr = false;
 
     for (const [key, value] of Object.entries(validation)) {
-      if (
-        value.err ||
-        (!(refs as any)[key].current?.value.trim() && key !== 'nickname')
-      ) {
+      if (value.err || !(refs as any)[key].current?.value.trim()) {
         validate(key, value.value);
         doesErr = true;
       }
@@ -177,7 +183,7 @@ const App = () => {
 
     setAppState({ isLoading: true, erred: false });
     axios({
-      url: 'https://moc-backend.herokuapp.com/api/v1/attendee/save',
+      url: 'https://moc-backend.herokuapp.com/api/v1/request/save',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -193,11 +199,7 @@ const App = () => {
             severity: error ? 'info' : 'success',
             open: true,
             message: !error
-              ? `Thank you, ${
-                  validation.full_name.value.split(' ')[0]
-                }. You've been successfully registered.`
-              : /already.*registered/.test(message)
-              ? "You've already been registered for the crusade. See you on Sunday. 🙂"
+              ? `Thank you, ${validation.nickname.value}. Your prayer request has been received.`
               : message + '.'
           });
           setAppState({ isLoading: false, erred: error });
@@ -240,43 +242,22 @@ const App = () => {
           onSubmit={(e: any) => e.preventDefault()}
           ref={formRef}>
           <h1 className='text-center mb-4 mt-4 px-2'>
-            MOC - Attendee Registration Form
+            BLW Campus Ministry
+            <br />- Zone B -
           </h1>
+          <h2 className='text-center mb-4 mt-4 px-2'>Prayer Request</h2>
           <Row className='align-self-center'>
             <Col xs={12} className='text-field-container'>
               <TextField
                 required
-                error={validation.full_name.err}
-                variant='outlined'
-                id='full_name'
-                label='Full Name'
-                size='medium'
-                autoComplete='name'
-                inputRef={refs.full_name}
-                helperText={validation.full_name.helperText}
-                aria-label='full name'
-                fullWidth
-                onChange={handleInputChange}
-                inputProps={inputProps}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <PersonIcon />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Col>
-            <Col xs={12} className='text-field-container'>
-              <TextField
-                error={false}
+                error={validation.nickname.err}
                 variant='outlined'
                 id='nickname'
                 label='Nickname'
                 size='medium'
-                autoComplete='nickname'
+                autoComplete='name'
                 inputRef={refs.nickname}
-                helperText={''}
+                helperText={validation.nickname.helperText}
                 aria-label='nickname'
                 fullWidth
                 onChange={handleInputChange}
@@ -340,6 +321,36 @@ const App = () => {
                 }}
               />
             </Col>
+            <Col xs={12} className='text-field-container'>
+              <TextField
+                required
+                error={validation.prayer_request.err}
+                variant='outlined'
+                id='prayer_request'
+                label='Request'
+                size='medium'
+                multiline
+                rows={4}
+                rowsMax={7}
+                autoCapitalize='sentences'
+                inputRef={refs.prayer_request}
+                helperText={validation.prayer_request.helperText}
+                aria-label='prayer request'
+                fullWidth
+                onChange={handleInputChange}
+                inputProps={inputProps}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment
+                      className='align-self-start mt-2'
+                      position='end'>
+                      <TouchAppIcon />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Col>
+
             <Col xs={12} className='text-field-container button-wrapper'>
               <Button
                 variant='contained'
@@ -354,7 +365,7 @@ const App = () => {
                 aria-label='submit'>
                 {appState.isLoading ? (
                   <>
-                    Registering you...{' '}
+                    Sending your request...{' '}
                     <CircularProgress
                       color='inherit'
                       size={16}
@@ -364,7 +375,7 @@ const App = () => {
                   </>
                 ) : (
                   <>
-                    Register <PersonAddOutlinedIcon className='ml-2' />
+                    Send <SendIcon className='ml-2' />
                   </>
                 )}
               </Button>
@@ -384,15 +395,6 @@ const App = () => {
           severity={snackbarState.severity}
           onClose={handleCloseSnackbar}>
           {snackbarState.message}
-          {!appState.erred && (
-            <>
-              <br />
-              See you at the crusade!{' '}
-              <span role='img' aria-label='smile emoji'>
-                🙂
-              </span>
-            </>
-          )}
         </MuiAlert>
       </Snackbar>
 

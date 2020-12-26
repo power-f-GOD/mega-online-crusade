@@ -6,12 +6,23 @@ $br: 0.625rem;
 .App {
   // @include debugger($color: red);
   background: $theme-primary-v5;
+  background: {
+    image: url('/images/prayer_banner.jpg');
+    position: center top;
+    size: cover;
+    attachment: fixed;
+  }
+
+  &::before {
+    @include before-or-after($bg: rgba(0, 0, 0, 0.65), $zi: 0);
+  }
 }
 
 .top-banner-container {
   position: sticky;
   top: 0;
   height: 20rem;
+  display: none !important;
 }
 
 body.webp {
@@ -42,7 +53,7 @@ body.no-webp {
 }
 
 form {
-  background: $theme-primary;
+  // background: $theme-primary;
   padding: 1rem 0;
   position: relative;
   // box-shadow: -0.5rem -1.25rem 1.25rem rgba($prim-r, $prim-g, $prim-b, 1);
@@ -53,8 +64,14 @@ form {
   }
 }
 
-h1 {
-  font-size: 1.3rem;
+h1,
+h2 {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+h2 {
+  font-size: 2rem;
   color: white;
 }
 
@@ -120,6 +137,14 @@ h1 {
   padding: 1rem;
 }
 
+.MuiOutlinedInput-multiline {
+  textarea {
+    padding: 0;
+    line-height: 1.5rem;
+  }
+  
+}
+
 .MuiFormHelperText-contained {
   margin-left: 1rem;
 }
@@ -132,7 +157,6 @@ h1 {
   // position: sticky;
   bottom: 0;
   padding-bottom: 0.75rem !important;
-  background-color: $theme-primary;
   border-radius: $br;
   z-index: 1;
 
@@ -160,11 +184,11 @@ footer {
   font-size: 0.85rem;
   margin-top: 2rem;
   padding: 2rem 1rem 0.75rem 1rem;
-  opacity: 0.175;
+  opacity: 0.2;
   transition: 0.3s;
 
   &:hover {
-    opacity: 0.375;
+    opacity: 0.4;
   }
 
   button {
