@@ -3,9 +3,7 @@
 $app-width: 27rem;
 $br: 0.625rem;
 
-.App {
-  // @include debugger($color: red);
-  background: $theme-primary-v5;
+body {
   background: {
     position: center top;
     size: cover;
@@ -13,28 +11,19 @@ $br: 0.625rem;
   }
 
   &::before {
-    @include before-or-after($bg: rgba(0, 0, 0, 0.65), $zi: 0);
+    @include before-or-after($bg: black, $o: 0.65, $zi: 0);
   }
 }
 
 body.webp {
-  .App {
-    background-image: url('/images/prayer_banner.webp');
-  }
+  background-image: url('/images/prayer_banner.webp');
 }
 
 body.no-webp {
-  .App {
-    background-image: url('/images/prayer_banner.jpg');
-  }
+  background-image: url('/images/prayer_banner.jpg');
 }
 
 form {
-  // background: $theme-primary;
-  padding: 1rem 0;
-  position: relative;
-  // box-shadow: -0.5rem -1.25rem 1.25rem rgba($prim-r, $prim-g, $prim-b, 1);
-
   & > .row {
     width: $app-width;
     max-width: 100vw;
@@ -87,7 +76,7 @@ h2 {
 
 .MuiOutlinedInput-root {
   border-radius: $br;
-  background-color: rgba(255, 255, 255, 0.075);
+  background-color: rgba(255, 255, 255, 0.1);
   border: 0.0625rem solid rgba(255, 255, 255, 0.15);
   transition: 0.3s;
 
@@ -97,7 +86,7 @@ h2 {
 
   &:focus-within,
   &:hover {
-    background-color: rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
     border-color: transparent;
   }
 
@@ -143,7 +132,7 @@ h2 {
 
     &:hover,
     &:focus {
-      background-color: #2484c8;
+      background-color: rgb(15, 143, 235);
     }
 
     &:disabled {

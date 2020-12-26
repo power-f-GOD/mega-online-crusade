@@ -230,17 +230,17 @@ const App = () => {
 
   return (
     <Box className='App fade-in' position='relative'>
-      <Container>
+      <Container><h1 className='text-center mb-4 mt-4 px-2'>
+            BLW Campus Ministry
+            <br />- Zone B -
+          </h1>
         <form
           className='d-flex justify-content-center  flex-column slide-in-bottom'
           noValidate
           autoComplete='on'
           onSubmit={(e: any) => e.preventDefault()}
           ref={formRef}>
-          <h1 className='text-center mb-4 mt-4 px-2'>
-            BLW Campus Ministry
-            <br />- Zone B -
-          </h1>
+          
           <h2 className='text-center mb-4 mt-4 px-2'>Prayer Request</h2>
           <Row className='align-self-center'>
             <Col xs={12} className='text-field-container'>
