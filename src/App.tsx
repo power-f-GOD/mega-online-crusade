@@ -230,10 +230,6 @@ const App = () => {
 
   return (
     <Box className='App fade-in' position='relative'>
-      <Container className='top-banner-container d-flex justify-content-center'>
-        <Col className='top-banner slide-in-top'></Col>
-      </Container>
-
       <Container>
         <form
           className='d-flex justify-content-center  flex-column slide-in-bottom'

@@ -7,7 +7,6 @@ $br: 0.625rem;
   // @include debugger($color: red);
   background: $theme-primary-v5;
   background: {
-    image: url('/images/prayer_banner.jpg');
     position: center top;
     size: cover;
     attachment: fixed;
@@ -18,37 +17,15 @@ $br: 0.625rem;
   }
 }
 
-.top-banner-container {
-  position: sticky;
-  top: 0;
-  height: 20rem;
-  display: none !important;
-}
-
 body.webp {
-  .top-banner {
-    background: {
-      image: url('/images/banner.webp');
-    }
+  .App {
+    background-image: url('/images/prayer_banner.webp');
   }
 }
 
 body.no-webp {
-  .top-banner {
-    background: {
-      image: url('/images/banner.jpg');
-    }
-  }
-}
-
-.top-banner {
-  height: 100%;
-  // max-height: 50vh;
-  width: 100%;
-  max-width: 100%;
-  background: {
-    position: center;
-    size: $app-width;
+  .App {
+    background-image: url('/images/prayer_banner.jpg');
   }
 }
 
@@ -142,7 +119,6 @@ h2 {
     padding: 0;
     line-height: 1.5rem;
   }
-  
 }
 
 .MuiFormHelperText-contained {
